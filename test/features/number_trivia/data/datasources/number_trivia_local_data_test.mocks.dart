@@ -33,49 +33,45 @@ class MockSharedPreferences extends _i1.Mock implements _i2.SharedPreferences {
         returnValueForMissingStub: <String>{},
       ) as Set<String>);
   @override
-  dynamic get(String? key) => super.noSuchMethod(
+  Object? get(String? key) => (super.noSuchMethod(
         Invocation.method(
           #get,
           [key],
         ),
         returnValueForMissingStub: null,
-      );
+      ) as Object?);
   @override
-  bool getBool(String? key) => (super.noSuchMethod(
+  bool? getBool(String? key) => (super.noSuchMethod(
         Invocation.method(
           #getBool,
           [key],
         ),
-        returnValue: false,
-        returnValueForMissingStub: false,
-      ) as bool);
+        returnValueForMissingStub: null,
+      ) as bool?);
   @override
-  int getInt(String? key) => (super.noSuchMethod(
+  int? getInt(String? key) => (super.noSuchMethod(
         Invocation.method(
           #getInt,
           [key],
         ),
-        returnValue: 0,
-        returnValueForMissingStub: 0,
-      ) as int);
+        returnValueForMissingStub: null,
+      ) as int?);
   @override
-  double getDouble(String? key) => (super.noSuchMethod(
+  double? getDouble(String? key) => (super.noSuchMethod(
         Invocation.method(
           #getDouble,
           [key],
         ),
-        returnValue: 0.0,
-        returnValueForMissingStub: 0.0,
-      ) as double);
+        returnValueForMissingStub: null,
+      ) as double?);
   @override
-  String getString(String? key) => (super.noSuchMethod(
+  String? getString(String? key) => (super.noSuchMethod(
         Invocation.method(
           #getString,
           [key],
         ),
-        returnValue: '',
-        returnValueForMissingStub: '',
-      ) as String);
+        returnValueForMissingStub: null,
+      ) as String?);
   @override
   bool containsKey(String? key) => (super.noSuchMethod(
         Invocation.method(
@@ -86,14 +82,13 @@ class MockSharedPreferences extends _i1.Mock implements _i2.SharedPreferences {
         returnValueForMissingStub: false,
       ) as bool);
   @override
-  List<String> getStringList(String? key) => (super.noSuchMethod(
+  List<String>? getStringList(String? key) => (super.noSuchMethod(
         Invocation.method(
           #getStringList,
           [key],
         ),
-        returnValue: <String>[],
-        returnValueForMissingStub: <String>[],
-      ) as List<String>);
+        returnValueForMissingStub: null,
+      ) as List<String>?);
   @override
   _i3.Future<bool> setBool(
     String? key,

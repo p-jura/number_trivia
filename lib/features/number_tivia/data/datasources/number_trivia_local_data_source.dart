@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:number_trivia/core/errors/exception.dart';
+import 'package:number_trivia/core/errors/failures.dart';
 import 'package:number_trivia/features/number_tivia/data/models/number_trivia_model.dart';
 import 'package:number_trivia/features/number_tivia/domain/etities/number_trivia.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,8 +13,10 @@ abstract class NumberTriviaLocalDataSource {
   /// Throw [CacheExeption] if no chached data is present.
   Future<NumberTriviaModel> getLastNumberTrivia();
 
-  Future<void> cacheNumberTrivia(NumberTrivia triviaToCache);
+  Future<void> cacheNumberTrivia(NumberTriviaModel triviaToCache);
 }
+
+const CACHED_NUMBER_TRIVIA = 'CACHED_NUMBER_TRIVIA';
 
 class NumberTriviaLocalDataSourceImpl implements NumberTriviaLocalDataSource {
   final SharedPreferences sharedPreferences;
@@ -19,12 +25,26 @@ class NumberTriviaLocalDataSourceImpl implements NumberTriviaLocalDataSource {
 
   @override
   Future<NumberTriviaModel> getLastNumberTrivia() {
-    // TODO: implement getLastNumberTrivia
-    throw UnimplementedError();
+    final String? jsonString =
+        sharedPreferences.getString(CACHED_NUMBER_TRIVIA);
+    if (jsonString == null) {
+      throw CacheException();
+    } else {
+      return Future.value(
+        NumberTriviaModel.fromJson(
+          jsonDecode(jsonString),
+        ),
+      );
+    }
   }
+
   @override
-  Future<void> cacheNumberTrivia(NumberTrivia triviaToCache) {
-    // TODO: implement cacheNumberTrivia
-    throw UnimplementedError();
+  Future<void> cacheNumberTrivia(NumberTriviaModel triviaToCache) {
+    return sharedPreferences.setString(
+      CACHED_NUMBER_TRIVIA,
+      jsonEncode(
+        triviaToCache.toJson(),
+      ),
+    );
   }
 }
