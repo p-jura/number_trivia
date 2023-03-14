@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:number_trivia/core/errors/exception.dart';
-import 'package:number_trivia/features/number_tivia/data/datasources/number_trivia_local_data_source.dart';
 import 'package:number_trivia/features/number_tivia/data/datasources/number_trivia_remote_data_source.dart';
 import 'package:number_trivia/features/number_tivia/data/models/number_trivia_model.dart';
 import 'package:http/http.dart' as http;
@@ -90,7 +88,7 @@ void main() {
         // assert
         expect(
             () => call(tNumber), throwsA(const TypeMatcher<ServerException>()));
-      });
+      },);
     },
   );
   group(

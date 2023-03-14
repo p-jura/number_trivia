@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:number_trivia/core/errors/exception.dart';
-import 'package:number_trivia/core/errors/failures.dart';
 import 'package:number_trivia/features/number_tivia/data/models/number_trivia_model.dart';
-import 'package:number_trivia/features/number_tivia/domain/etities/number_trivia.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class NumberTriviaLocalDataSource {
@@ -16,6 +14,7 @@ abstract class NumberTriviaLocalDataSource {
   Future<void> cacheNumberTrivia(NumberTriviaModel triviaToCache);
 }
 
+// ignore: constant_identifier_names
 const CACHED_NUMBER_TRIVIA = 'CACHED_NUMBER_TRIVIA';
 
 class NumberTriviaLocalDataSourceImpl implements NumberTriviaLocalDataSource {

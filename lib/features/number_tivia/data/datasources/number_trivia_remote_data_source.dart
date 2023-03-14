@@ -18,6 +18,7 @@ abstract class NumberTriviaRemoteDataSource {
 
 // ignore: constant_identifier_names
 const _URL = 'http://numbersapi.com';
+// ignore: constant_identifier_names
 const _HEADERS = {'Content-Type': 'application/json'};
 
 class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
@@ -27,18 +28,13 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
 
   @override
   Future<NumberTriviaModel> getConcreteNumberTrivia(int? number) =>
-      _getTriviaFromUrl(number);
+      _getTriviaFromUrl('$_URL/$number');
 
   @override
-  Future<NumberTriviaModel> getRandomNumberTrivia() => _getTriviaFromUrl();
+  Future<NumberTriviaModel> getRandomNumberTrivia() =>
+      _getTriviaFromUrl('$_URL/random');
 
-  Future<NumberTriviaModel> _getTriviaFromUrl([int? number]) async {
-    String url;
-    if (number != null) {
-      url = '$_URL/$number';
-    } else {
-      url = '$_URL/random';
-    }
+  Future<NumberTriviaModel> _getTriviaFromUrl(String url) async {
     final response = await client.get(
       Uri.parse(url),
       headers: _HEADERS,
