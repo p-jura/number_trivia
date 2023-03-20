@@ -1,9 +1,11 @@
-// ignore_for_file: unnecessary_null_comparison, constant_identifier_names
+// ignore_for_file: unnecessary_null_comparison, constant_identifier_names, invalid_use_of_visible_for_testing_member
 
 // ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:number_trivia/core/errors/failures.dart';
+import 'package:number_trivia/core/usecases/usecases.dart';
 import 'package:number_trivia/core/util/input_converter.dart';
 import 'package:number_trivia/features/number_tivia/domain/etities/number_trivia.dart';
 import 'package:number_trivia/features/number_tivia/domain/usecases/get_concrete_number_trivia.dart';
@@ -46,16 +48,22 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
               emit(Loading());
               final failureOrTrivia =
                   await getConcreteNumberTrivia(Params(number: integer));
-              failureOrTrivia.fold(
-                (failure) =>
-                    emit(Error(message: failure.mapFailureToMessage())),
-                (trivia) => emit(Loaded(trivia)),
-              );
+              _emitFaiulureOrTrivia(failureOrTrivia);
             },
           );
+        } else if (event is GetTriviaForRandomNumber) {
+          emit(Loading());
+          final failureOrTrivia = await getRandomNumberTrivia(NoParams());
+          _emitFaiulureOrTrivia(failureOrTrivia);
+
         }
       },
     );
+  }
+  void _emitFaiulureOrTrivia(Either<Failure, NumberTrivia> failureOrTrivia) {
+    failureOrTrivia.fold(
+        (failure) => emit(Error(message: failure.mapFailureToMessage())),
+        (trivia) => emit(Loaded(trivia)));
   }
 }
 

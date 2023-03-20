@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:number_trivia/core/errors/failures.dart';
+import 'package:number_trivia/core/usecases/usecases.dart';
 import 'package:number_trivia/core/util/input_converter.dart';
 import 'package:number_trivia/features/number_tivia/domain/etities/number_trivia.dart';
 import 'package:number_trivia/features/number_tivia/domain/usecases/get_concrete_number_trivia.dart';
@@ -137,6 +138,70 @@ void main() {
         },
         act: (bloc) {
           bloc.add(const GetTriviaForConcreteNumber(tNumberString));
+        },
+        expect: () {
+          return [Loading(), const Error(message: CACHE_FAILURE_MESSAGE)];
+        },
+      );
+    },
+  );
+  group(
+    'GetTriviaForRandomNumber',
+    () {
+      const tNumberTrivia = NumberTrivia(text: 'test trivia', number: 1);
+
+      test(
+        'should get data frome concrete usecase',
+        () async {
+          // arrange
+          when(mockGetRandomNumberTrivia(NoParams()))
+              .thenAnswer((_) async => const Right(tNumberTrivia));
+          // act
+          triviaBloc.add(GetTriviaForRandomNumber());
+          await untilCalled(mockGetRandomNumberTrivia(NoParams()))
+              .timeout(const Duration(seconds: 3));
+          // assert
+          verify(mockGetRandomNumberTrivia(NoParams()));
+        },
+      );
+      blocTest(
+        'should emit [loading, loaded] when data is gotten successfully',
+        build: () => triviaBloc,
+        setUp: () {
+          when(mockGetRandomNumberTrivia(NoParams()))
+              .thenAnswer((_) async => const Right(tNumberTrivia));
+        },
+        act: (bloc) {
+          bloc.add(GetTriviaForRandomNumber());
+        },
+        expect: () {
+          return [Loading(), const Loaded(tNumberTrivia)];
+        },
+      );
+      blocTest(
+        'should emit [loading, Error] when getting data fails',
+        build: () => triviaBloc,
+        setUp: () {
+          when(mockGetRandomNumberTrivia(NoParams()))
+              .thenAnswer((_) async => Left(ServerFailure()));
+        },
+        act: (bloc) {
+          bloc.add(GetTriviaForRandomNumber());
+        },
+        expect: () {
+          return [Loading(), const Error(message: SERVER_FAILURE_MESSAGE)];
+        },
+      );
+      blocTest(
+        '''should emit [loading, Error] with proper 
+        message for error when getting data fails''',
+        build: () => triviaBloc,
+        setUp: () {
+          when(mockGetRandomNumberTrivia(NoParams()))
+              .thenAnswer((_) async => Left(CacheFailure()));
+        },
+        act: (bloc) {
+          bloc.add(GetTriviaForRandomNumber());
         },
         expect: () {
           return [Loading(), const Error(message: CACHE_FAILURE_MESSAGE)];
