@@ -40,7 +40,7 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
           final inputEither =
               inputConverter.stringToUnsignedInteger(event.numberString);
 
-          inputEither.fold(
+          await inputEither.fold(
             (failure) {
               emit(Error(message: failure.mapFailureToMessage()));
             },
