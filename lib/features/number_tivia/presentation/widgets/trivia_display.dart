@@ -20,6 +20,7 @@ class TriviaDisplay extends StatelessWidget {
         children: [
           Text(
             numberTrivia.number.toString(),
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 48,
               fontWeight: FontWeight.bold,

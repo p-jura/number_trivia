@@ -32,7 +32,8 @@ class _PageControlWidgetState extends State<PageControlWidget> {
               hintText: 'Input a number',
             ),
             keyboardType: TextInputType.number,
-            onSubmitted: (value) => dispatchConcrete(),
+            onSubmitted: (value) =>
+                dispatch(GetTriviaForConcreteNumber(inputString)),
             onChanged: (value) {
               setState(() {
                 inputString = value;
@@ -49,7 +50,7 @@ class _PageControlWidgetState extends State<PageControlWidget> {
                   onPressed: inputString.isEmpty
                       ? null
                       : () {
-                          dispatchConcrete();
+                          dispatch(GetTriviaForConcreteNumber(inputString));
                         },
                   child: const Text('Search'),
                 ),
@@ -61,7 +62,7 @@ class _PageControlWidgetState extends State<PageControlWidget> {
                 fit: FlexFit.tight,
                 child: ElevatedButton(
                   onPressed: () {
-                    dispatchRandom();
+                    dispatch(GetTriviaForRandomNumber());
                   },
                   child: const Text('Get random Trvia'),
                 ),
@@ -73,14 +74,11 @@ class _PageControlWidgetState extends State<PageControlWidget> {
     );
   }
 
-  void dispatchConcrete() {
+  void dispatch(NumberTriviaEvent event) {
     txController.clear();
-    BlocProvider.of<NumberTriviaBloc>(context)
-        .add(GetTriviaForConcreteNumber(inputString));
-  }
-
-  void dispatchRandom() {
-    txController.clear();
-    BlocProvider.of<NumberTriviaBloc>(context).add(GetTriviaForRandomNumber());
+    setState(() {
+      inputString = '';
+    });
+    BlocProvider.of<NumberTriviaBloc>(context).add(event);
   }
 }
